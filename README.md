@@ -49,7 +49,7 @@ TIMEZONE=Europe/Zurich  # Timezone
 LOG_LEVEL=INFO
 ```
 
-##🐳 Docker Setup
+## 🐳 Docker Setup
 Build & Run
 ``docker build -t forex-collector .``
 ``docker run --env-file .env forex-collector``
@@ -76,7 +76,6 @@ Run the scheduler (background collection):
 ##📦 Project Structure
 ```
  app/
- 	├── backfiller.py    # (legacy) optional backfill script
  	├── collector.py     # rate collection logic
  	├── config.py        # env vars + paths
  	├── db.py            # Supabase integration
@@ -84,13 +83,13 @@ Run the scheduler (background collection):
  	├── scheduler.py     # APScheduler jobs
  	├── utils.py         # helpers (cache, dedupe, etc.)
 .env.example
-.docker-compose.yaml
-dockerfile
+docker-compose.yaml
+DockerFile
 README.md
 requirements.txt
 ```
 
-##✅ Development Notes
+## ✅ Development Notes
 
 - Uses CurrencyConverterwith ECB_URL for historical rates.
 - ECB updates daily ~16:00 CET. Weekends/holidays have no new rates → system retries & uses fallback until next business day.
