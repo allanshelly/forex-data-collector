@@ -37,7 +37,8 @@ CREATE TABLE exchange_rates (
 
 Create a .env file:
 
-```SUPABASE_URL=your_supabase_url
+```bash
+SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
 
 # Scheduler config
@@ -51,29 +52,41 @@ LOG_LEVEL=INFO
 
 ## 🐳 Docker Setup
 Build & Run
-```docker build -t forex-collector .```
-```docker run --env-file .env forex-collector```
+```bash
+docker build -t forex-collector .
+```
+```bash
+docker run --env-file .env forex-collector
+```
 
 Docker Compose in the background(recommended)
-```docker compose up -d --build```
+```bash
+docker compose up -d --build
+```
 
 🏃 Running Locally (without Docker)
 
 Install dependencies:
 
-```pip install -r requirements.txt```
+```bash
+pip install -r requirements.txt
+```
 
 
 Run backfill + today’s collection:
 
-```python -m app.main```
+```bash
+python -m app.main
+```
 
 
 Run the scheduler (background collection):
 
-```python -m app.scheduler```
+```bash
+python -m app.scheduler
+```
 
-##📦 Project Structure
+## 📦 Project Structure
 ```
  app/
  	├── collector.py     # rate collection logic
@@ -84,7 +97,7 @@ Run the scheduler (background collection):
  	├── utils.py         # helpers (cache, dedupe, etc.)
 .env.example
 docker-compose.yaml
-DockerFile
+Dockerfile
 README.md
 requirements.txt
 ```
@@ -100,14 +113,17 @@ requirements.txt
 
 Run the unit tests with:
 
-```pytest -q```
+```bash
+pytest -q
+```
 
 Or
 
 Run the unit tests with docker
 
-```docker compose up -d --build```
-```docker compose run --rm test```
+```bash
+docker compose run --rm test
+```
 
 
 Tests cover:
