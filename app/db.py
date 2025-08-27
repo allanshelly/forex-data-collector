@@ -2,7 +2,6 @@ import logging
 from supabase import create_client
 from app import config
 
-# Create Supabase client
 supabase = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
 def test_connection():
@@ -39,3 +38,19 @@ def insert_exchange_rates(rows: list[dict]):
     except Exception as e:
         logging.error(f"Failed to insert exchange rates: {e}", exc_info=True)
         raise
+
+def has_rates_for_date(target_date):
+    try:
+        response = supabase.table("exchange_rates") \
+            .select("date") \
+            .eq("date", str(target_date)) \
+            .limit(1) \
+            .execute()
+
+        if hasattr(response, "data") and response.data:
+            return True
+        return False
+
+    except Exception as e:
+        logging.error(f"Failed to check rates for {target_date}: {e}", exc_info=True)
+        return False
