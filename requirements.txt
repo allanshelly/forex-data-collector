@@ -1,0 +1,6 @@
+currencyconverter
+supabase
+apscheduler
+python-dateutil
+requests
+pytz
