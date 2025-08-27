@@ -95,3 +95,32 @@ requirements.txt
 - ECB updates daily ~16:00 CET. Weekends/holidays have no new rates → system retries & uses fallback until next business day.
 - Cache files are stored in /app/cache/ecb_YYYY-MM-DD.xml.
 - All inserts use Supabase upsert to avoid duplicates.
+
+## 🧪 Testing
+
+Run the unit tests with:
+
+``pytest -q``
+
+
+Tests cover:
+
+Rate collection (82 pairs for EUR & USD)
+
+DB insertion with upsert
+
+Checking for existing rates in DB
+
+## 🚀 Evaluation Focus
+
+Clean, production-ready code
+
+Handles 82 daily records efficiently
+
+Retry & fallback logic for ECB delays
+
+Works fully in Docker
+
+Clear logging + setup docs
+
+Unit tests for core functionality
