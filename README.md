@@ -105,22 +105,22 @@ Run the unit tests with:
 
 Tests cover:
 
-Rate collection (82 pairs for EUR & USD)
+- Rate collection (82 pairs for EUR & USD)
 
-DB insertion with upsert
+- DB insertion with upsert
 
-Checking for existing rates in DB
+- Checking for existing rates in DB
 
 ## 🚀 Evaluation Focus
 
-Clean, production-ready code
+- Clean, production-ready code
 
-Handles 82 daily records efficiently
+- Handles 82 daily records efficiently
 
-Retry & fallback logic for ECB delays
+- Retry & fallback logic for ECB delays
 
-Works fully in Docker
+- Works fully in Docker
 
-Clear logging + setup docs
+- Clear logging + setup docs
 
-Unit tests for core functionality
+- Unit tests for core functionality
