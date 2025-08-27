@@ -1,0 +1,6 @@
+services:
+  forex-collector:
+    build: .
+    container_name: forex-collector
+    env_file: .env
+    restart: always

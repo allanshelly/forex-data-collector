@@ -4,3 +4,4 @@ apscheduler
 python-dateutil
 requests
 pytz
+python-dotenv
