@@ -1,5 +1,11 @@
 import logging
 from collections import Counter
+from datetime import date
+from currency_converter import CurrencyConverter
+
+from pathlib import Path
+CACHE_DIR = Path("/app/cache")
+CACHE_DIR.mkdir(exist_ok=True)
 
 supabase = None
 
@@ -14,26 +20,12 @@ def deduplicate_rows(rows, keys=("date", "base_currency", "target_currency")):
         seen[key] = row
     return list(seen.values())
 
-def insert_exchange_rates(rows):
-    if not rows:
-        logging.warning("No rows to insert.")
-        return
-
-    # dedupe
-    deduped_rows = deduplicate_rows(rows)
-    logging.info(f"{len(rows)} rows received, deduplicated to {len(deduped_rows)} rows.")
-
-    try:
-        response = supabase.table("exchange_rates").upsert(
-            deduped_rows,
-            on_conflict='exchange_rates_date_base_target_key'
-        ).execute()
-
-        if hasattr(response, "error") and response.error:
-            logging.error(f"Supabase insert error: {response.error}")
-        else:
-            logging.info(f"Inserted/updated {len(deduped_rows)} rows.")
-
-    except Exception as e:
-        logging.error(f"Failed to insert exchange rates: {e}", exc_info=True)
-
+def load_currency_converter():
+    today = date.today().isoformat()
+    cache_file = CACHE_DIR / f"ecb_{today}.xml"
+    if not cache_file.exists():
+        logging.info("Downloading fresh ECB data...")
+        return CurrencyConverter(ECB_URL, fallback_on_missing_rate=True)
+    else:
+        logging.info("Using cached ECB data...")
+        return CurrencyConverter(str(cache_file), fallback_on_missing_rate=True)

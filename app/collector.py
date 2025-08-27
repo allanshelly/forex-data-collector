@@ -1,9 +1,7 @@
 from currency_converter import CurrencyConverter, ECB_URL
 from datetime import date
-from app.db import insert_exchange_rates
 from app.utils import deduplicate_rows
 import logging
-from pprint import pformat
 
 def collect_rates(target_date: date):
     c = CurrencyConverter(
@@ -44,7 +42,8 @@ def collect_rates(target_date: date):
     # dedupe
     deduped_rows = deduplicate_rows(results, keys=("date", "base_currency", "target_currency"))
 
-    # insert
-    insert_exchange_rates(deduped_rows)
+    # fallback
+    if c.fallback_on_missing_rate:
+        logging.warning(f"Using fallback rates for {target_date}")
 
-    logging.info(f"Inserted {len(results)} records for {target_date}")
+    return deduped_rows

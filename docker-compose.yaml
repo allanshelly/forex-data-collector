@@ -3,4 +3,4 @@ services:
     build: .
     container_name: forex-collector
     env_file: .env
-    restart: always
+    restart: no

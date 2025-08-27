@@ -1,56 +1,41 @@
 import logging
-from supabase import create_client, Client
+from supabase import create_client
 from app import config
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    force=True,
-)
+# Create Supabase client
+supabase = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
 
-supabase: Client = create_client(config.SUPABASE_URL, config.SUPABASE_KEY)
-
-def test_connection() -> bool:
-    """Test Supabase connection by fetching a single row."""
+def test_connection():
     try:
-        logging.info("Testing Supabase connection...")
         response = supabase.table("exchange_rates").select("*").limit(1).execute()
-        if hasattr(response, "error") and response.error:
-            logging.error(f"Connection test failed: {response.error}")
+        if hasattr(response, "data"):
+            logging.info("Supabase connection successful.")
+            return True
+        else:
+            logging.warning("Supabase connection test returned no data.")
             return False
-        logging.info("Supabase connection successful!")
-        logging.info(f"Sample row: {response.data if response.data else 'No rows yet.'}")
-        return True
     except Exception as e:
-        logging.error(f"Supabase connection test raised exception: {e}", exc_info=True)
+        logging.error(f"Supabase connection failed: {e}", exc_info=True)
         return False
 
 def insert_exchange_rates(rows: list[dict]):
-    """
-    Insert or update exchange rate records into the database.
-    Uses upsert with unique constraint on (date, base_currency, target_currency).
-    """
     if not rows:
-        logging.info("No rows to insert.")
-        return
-
-    if not test_connection():
-        logging.error("Cannot insert rows because Supabase connection failed.")
+        logging.warning("No rows to insert.")
         return
 
     try:
-        response = (
-            supabase.table("exchange_rates")
-            .upsert(rows, on_conflict="date,base_currency,target_currency")
-            .execute()
-        )
+        response = supabase.table("exchange_rates").upsert(
+            rows,
+            on_conflict="date,base_currency,target_currency"
+        ).execute()
 
         if hasattr(response, "error") and response.error:
-            logging.error(f"Failed to upsert rows: {response.error}")
+            logging.error(f"Supabase insert error: {response.error}")
         else:
-            logging.info(f"Upserted {len(rows)} rows into exchange_rates.")
+            logging.info(f"Inserted/updated {len(rows)} rows into exchange_rates.")
 
         return response
+
     except Exception as e:
         logging.error(f"Failed to insert exchange rates: {e}", exc_info=True)
         raise
