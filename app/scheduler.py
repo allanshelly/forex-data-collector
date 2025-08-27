@@ -9,7 +9,9 @@ from app import config
 logging.basicConfig(level=config.LOG_LEVEL)
 scheduler = BlockingScheduler(timezone=config.TIMEZONE)
 
-def run_collection(target_date: date):
+def run_collection():
+    """Collect and insert rates for the current date."""
+    target_date = date.today()
     logging.info(f"Running scheduled collection for {target_date}")
     try:
         rows = collect_rates(target_date)
@@ -21,18 +23,22 @@ def run_collection(target_date: date):
             insert_exchange_rates(rows)
             logging.info(f"Inserted {len(rows)} records for {target_date}")
         else:
-            insert_exchange_rates(rows)  # Upsert ensures freshness
+            insert_exchange_rates(rows)  # upsert refresh
             logging.info(f"Updated {len(rows)} records for {target_date}")
     except Exception as e:
         logging.error(f"Scheduled collection failed for {target_date}: {e}", exc_info=True)
 
 # daily
 hour, minute = map(int, config.COLLECTION_TIME.split(":"))
-scheduler.add_job(run_collection, CronTrigger(hour=hour, minute=minute), args=[date.today()])
+scheduler.add_job(run_collection, CronTrigger(hour=hour, minute=minute))
 
-# retry
+# retries
 for rt in config.RETRY_TIMES:
     hour, minute = map(int, rt.split(":"))
-    scheduler.add_job(run_collection, CronTrigger(hour=hour, minute=minute), args=[date.today()])
+    scheduler.add_job(run_collection, CronTrigger(hour=hour, minute=minute))
 
-scheduler.start()
+if __name__ == "__main__":
+    try:
+        scheduler.start()
+    except (KeyboardInterrupt, SystemExit):
+        logging.info("Scheduler stopped.")
