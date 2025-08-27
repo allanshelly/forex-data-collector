@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Run app
-CMD ["python", "-m", "app.main"]
+CMD ["sh", "-c", "python -m app.main && python -m app.scheduler"]
