@@ -30,7 +30,8 @@ CREATE TABLE exchange_rates (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     UNIQUE(date, base_currency, target_currency)
-);```
+);
+```
 
 ## 🔐 Environment Variables
 
@@ -45,7 +46,8 @@ RETRY_TIMES=17:30,18:30 # Retry attempts (CET)
 TIMEZONE=Europe/Zurich  # Timezone
 
 # Logging
-LOG_LEVEL=INFO```
+LOG_LEVEL=INFO
+```
 
 ##🐳 Docker Setup
 Build & Run
@@ -85,7 +87,8 @@ Run the scheduler (background collection):
 .docker-compose.yaml
 dockerfile
 README.md
-requirements.txt```
+requirements.txt
+```
 
 ##✅ Development Notes
 
