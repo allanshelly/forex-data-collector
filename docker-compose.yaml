@@ -4,3 +4,10 @@ services:
     container_name: forex-collector
     env_file: .env
     restart: no
+  test:
+    build: .
+    container_name: forex-collector-test
+    env_file: .env
+    command: pytest -q
+    environment:
+      - PYTHONPATH=/app

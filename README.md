@@ -54,8 +54,8 @@ Build & Run
 ```docker build -t forex-collector .```
 ```docker run --env-file .env forex-collector```
 
-Docker Compose (recommended)
-```docker-compose up --build```
+Docker Compose in the background(recommended)
+```docker compose up -d --build```
 
 🏃 Running Locally (without Docker)
 
@@ -101,6 +101,13 @@ requirements.txt
 Run the unit tests with:
 
 ```pytest -q```
+
+Or
+
+Run the unit tests with docker
+
+```docker compose up -d --build```
+```docker compose run --rm test```
 
 
 Tests cover:
