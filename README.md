@@ -88,7 +88,7 @@ python -m app.scheduler
 
 ## 📦 Project Structure
 ```
- app/
+app/
  	├── collector.py     # rate collection logic
  	├── config.py        # env vars + paths
  	├── db.py            # Supabase integration
