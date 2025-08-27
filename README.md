@@ -51,27 +51,27 @@ LOG_LEVEL=INFO
 
 ## 🐳 Docker Setup
 Build & Run
-``docker build -t forex-collector .``
-``docker run --env-file .env forex-collector``
+```docker build -t forex-collector .```
+```docker run --env-file .env forex-collector```
 
 Docker Compose (recommended)
-``docker-compose up --build``
+```docker-compose up --build```
 
 🏃 Running Locally (without Docker)
 
 Install dependencies:
 
-``pip install -r requirements.txt``
+```pip install -r requirements.txt```
 
 
 Run backfill + today’s collection:
 
-``python -m app.main``
+```python -m app.main```
 
 
 Run the scheduler (background collection):
 
-``python -m app.scheduler``
+```python -m app.scheduler```
 
 ##📦 Project Structure
 ```
@@ -100,7 +100,7 @@ requirements.txt
 
 Run the unit tests with:
 
-``pytest -q``
+```pytest -q```
 
 
 Tests cover:
